@@ -169,7 +169,7 @@ if (strpos($element->href, $needle) !== false) {
 }
 // print_r($arr);
 
-$arr = (array_unique($arr));
+// $arr = (array_unique($arr));
 
 // echo "T".$totalcount;
 // echo"Ex".$externalurls;
@@ -210,7 +210,7 @@ foreach($arr as $key=>&$e){
 }
 
 
-
+$ba = [];
 $int=[];
 $ext=[];
 $tot=[];
@@ -229,6 +229,8 @@ $ran=[];
     $data_temp[] = explode(",",$item);
     }
 
+    // $data_temp = (array_unique($data_temp));
+    // print_r($data_temp);
 $internal=0;
 $total =0;
 $external=0;
@@ -246,8 +248,16 @@ foreach ($data_temp as $key => $row)
 array_multisort($sortarray, SORT_DESC, $data_temp);
 
 
+for($n=0;$n<=count($data_temp);$n++){
+$ba[$n] = $data_temp[$n][1];
+}
+
+$ba = (array_unique($ba));
+// print_r($ba);
 // sort_array_of_array($data_temp, 0);
-$slice = array_slice($data_temp,0,15);
+$slice = array_slice($ba,0,15);
+
+
 
 
 // print_r ($slice);
@@ -258,14 +268,14 @@ $u = 0;
 
 foreach($slice as $key=>$links){
 
-    $ran2 = $links[1];
+    $ran2 = $links;
  
     
     $ran = file_get_html($ran2);
 
     foreach($ran->find('a') as $element2) 
 {
-    if($element->href[0]==""){
+    if($element2->href[0]==""){
  
         $element2->href = $concatenated.$element2->href;
  
@@ -298,12 +308,12 @@ elseif($element2->href[0]=='/'){
         if (strpos($ur, $www) !== false){
                 if($q[1] != $sname || $q[2] != $com){
                         $external++;
-                        $arr2[$i]=$element->href;
+                        $arr2[$i]=$element2->href;
                         $i++;
                         // echo $sname;
                 }
                 else{
-                        $arr2[$i]=$element->href;
+                        $arr2[$i]=$element2->href;
                         $i++;
                 }
                 
@@ -312,12 +322,12 @@ elseif($element2->href[0]=='/'){
         else{
                 if($q[0] != $sname || $q[1] != $com){
                         $external++;
-                        $arr2[$i]=$element->href;
+                        $arr2[$i]=$element2->href;
                         $i++;
                         // echo $sname;
                 }
                 else{
-                        $arr2[$i]=$element->href;
+                        $arr2[$i]=$element2->href;
                         $i++;
                 }
         }
@@ -373,7 +383,7 @@ $totalinternal=0;
         <?php for($s=0;$s<=14;$s++){
 ?>
 </tr>
-<td><?php echo $slice[$s][1];?></td>
+<td><?php echo $slice[$s];?></td>
 <td><?php echo $tot[$s];?></td>
 <td><?php echo $int[$s];?></td>
 
