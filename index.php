@@ -34,7 +34,7 @@
 <?php
 error_reporting(0);
 $url=$_POST['url'];
-// $url = "https://www.tesla.com";
+// $url = "https://www.airconcierge.net/";
 // echo $url;
 $len= strlen($url)-1;
 include("simple_html_dom.php");
@@ -116,7 +116,7 @@ if($element->href[0]=='/'){
 
 
         $totalcount++;
-//         // $haystack = 'How are you?';
+
 
 
 // $element->href =str_replace('www.','',$element->href);
@@ -139,7 +139,7 @@ if (strpos($element->href, $needle) !== false) {
         if (strpos($ur, $www) !== false){
                 if($q[1] != $sname || $q[2] != $com){
                         $externalurls++;
-                        $arr[$i]=$element->href;
+                        // $arr[$i]=$element->href;
                         $i++;
                         // echo $sname;
                 }
@@ -153,7 +153,7 @@ if (strpos($element->href, $needle) !== false) {
         else{
                 if($q[0] != $sname || $q[1] != $com){
                         $externalurls++;
-                        $arr[$i]=$element->href;
+                        // $arr[$i]=$element->href;
                         $i++;
                         // echo $sname;
                 }
@@ -209,6 +209,8 @@ foreach($arr as $key=>&$e){
  $top2[$key] =$a.",".$e;
 }
 
+// print_r($top2);
+
 
 $ba = [];
 $int=[];
@@ -253,6 +255,7 @@ $ba[$n] = $data_temp[$n][1];
 }
 
 $ba = (array_unique($ba));
+
 // print_r($ba);
 // sort_array_of_array($data_temp, 0);
 $slice = array_slice($ba,0,15);
@@ -265,6 +268,8 @@ $slice = array_slice($ba,0,15);
 $count1 = 0;
 $needle = "/";
 $u = 0;
+$pp = [];
+$qq = [];
 
 foreach($slice as $key=>$links){
 
@@ -293,20 +298,20 @@ elseif($element2->href[0]=='/'){
     $count1++;
 
     if (strpos($element2->href, $needle) !== false) {
-        $p=explode("/",$element2->href);
-        // echo $p[2]."\n";
+        $pp=explode("/",$element2->href);
+        // echo $pp[2]."\n";
 
         $needle ='.';
 
-        if(strpos($p[2], $needle) !== false){
-                $q=explode(".",$p[2]);
+        if(strpos($pp[2], $needle) !== false){
+                $qq=explode(".",$pp[2]);
                 // print_r($q);
         }
 
        
 
         if (strpos($ur, $www) !== false){
-                if($q[1] != $sname || $q[2] != $com){
+                if($qq[1] != $sname || $qq[2] != $com){
                         $external++;
                         $arr2[$i]=$element2->href;
                         $i++;
@@ -320,7 +325,7 @@ elseif($element2->href[0]=='/'){
         }
         
         else{
-                if($q[0] != $sname || $q[1] != $com){
+                if($qq[0] != $sname || $qq[1] != $com){
                         $external++;
                         $arr2[$i]=$element2->href;
                         $i++;
