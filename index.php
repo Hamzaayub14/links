@@ -34,7 +34,7 @@
 <?php
 error_reporting(0);
 $url=$_POST['url'];
-// $url = "https://www.airconcierge.net/";
+// $url = "https://www.tesla.com/";
 // echo $url;
 $len= strlen($url)-1;
 include("simple_html_dom.php");
@@ -92,7 +92,9 @@ $needle2   = '/';
 $arr=[];
 $arr2=[];
 $html2=0;
-
+$linksum = [];
+$intsum =[];
+$extsum = [];
 $con = 0;
 
 foreach($html->find('a') as $element) 
@@ -242,23 +244,30 @@ $needle ='.';
 
 
 $sortarray = array();
-foreach ($data_temp as $key => $row)
+
+$ids = array_column($data_temp, 1);
+$ids = array_unique($ids);
+$array = array_filter($data_temp, function ($key, $value) use ($ids) {
+    return in_array($value, array_keys($ids));
+}, ARRAY_FILTER_USE_BOTH);
+foreach ($array as $key => $row)
 {
     $sortarray[$key] = $row[0];
 }
 
-array_multisort($sortarray, SORT_DESC, $data_temp);
+array_multisort($sortarray, SORT_DESC, $array);
 
+// print_r($array);
+// for($n=0;$n<=count($data_temp);$n++){
+// $ba[$n] = $data_temp[$n][1];
+// }
 
-for($n=0;$n<=count($data_temp);$n++){
-$ba[$n] = $data_temp[$n][1];
-}
-
-$ba = (array_unique($ba));
+// $ba = (array_unique($ba));
 
 // print_r($ba);
 // sort_array_of_array($data_temp, 0);
-$slice = array_slice($ba,0,15);
+$slice = array_slice($array,0,15);
+
 
 
 
@@ -270,10 +279,10 @@ $needle = "/";
 $u = 0;
 $pp = [];
 $qq = [];
-
+$res = [];
 foreach($slice as $key=>$links){
 
-    $ran2 = $links;
+    $ran2 = $links[1];
  
     
     $ran = file_get_html($ran2);
@@ -345,18 +354,32 @@ elseif($element2->href[0]=='/'){
 
  $totalinternal = $count1-$external;
 
+ $res[$u] = $links[0] / $totalinternal;
+ $res[$u] = $res[$u] / $external; 
+ $res[$u] = $res[$u] / 10;
+
+//  print_r($res);
+
 $int[$u]=$totalinternal;
 $ext[$u]=$external;
 $tot[$u]=$count1;
+
+
 
 $external=0;
 $count1=0;
 $totalinternal=0;
 
+
+
  
      $u++;  
 
 }
+
+
+
+
 
 
 
@@ -378,21 +401,25 @@ $totalinternal=0;
         <thead>
             <tr>
                 <th>Links</th>
-                <th>Total Links</th>
+                
+                <th>Word Count</th>
+                
                 <th>Internal Links</th>
                 <th>External Links</th>
-             
+                <th>Score</th>
             </tr>
         </thead>
         <tbody>
         <?php for($s=0;$s<=14;$s++){
 ?>
 </tr>
-<td><?php echo $slice[$s];?></td>
-<td><?php echo $tot[$s];?></td>
+<td><?php echo $slice[$s][1];?></td>
+
+<td><?php echo $slice[$s][0];?></td>
 <td><?php echo $int[$s];?></td>
 
 <td><?php echo $ext[$s];?></td>
+<td><?php echo $res[$s];?></td>
 </tr>
 <?php }
 ?>
