@@ -34,8 +34,7 @@
 <?php
 error_reporting(0);
 $url=$_POST['url'];
-// $url = "https://www.tesla.com/";
-// echo $url;
+
 $len= strlen($url)-1;
 include("simple_html_dom.php");
 if($url[$len]=="/"){
